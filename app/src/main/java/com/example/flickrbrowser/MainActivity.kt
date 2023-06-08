@@ -4,6 +4,9 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import com.example.flickrbrowser.databinding.ActivityMainBinding
 import java.lang.Exception
 
@@ -23,6 +26,20 @@ class MainActivity : AppCompatActivity() , GetFlickrJsonData.OnDataAvailable {
 
         getRawData.execute(url)
         Log.d(TAG, "On create ended")
+
+
+
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun createUri(baseUrl : String , searchQueries : String , lang : String , matchAll : Boolean) : String{
