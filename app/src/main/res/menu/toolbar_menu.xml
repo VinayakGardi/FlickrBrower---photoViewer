@@ -6,6 +6,9 @@
         android:icon="@drawable/search_baseline"
         app:showAsAction="always"/>
 
-
+    <item android:id="@+id/app_exit"
+        android:title="exit"
+        android:icon="@drawable/baseline_exit"
+        app:showAsAction="always"/>
 
 </menu>

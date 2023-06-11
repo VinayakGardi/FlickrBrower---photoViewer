@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +16,7 @@ import com.example.flickrbrowser.databinding.ActivityMainBinding
 import java.lang.Exception
 
 
-class MainActivity : AppCompatActivity() , GetFlickrJsonData.OnDataAvailable {
+class MainActivity : AppCompatActivity() , GetFlickrJsonData.OnDataAvailable , RecyclerItemClickListener.OnRecyclerClickListener {
     private val TAG = "MainActivity"
     private lateinit var binding: ActivityMainBinding
     private var flickrRecyclerViewAdapter = FlickrRecyclerViewAdapter(ArrayList())
@@ -28,11 +29,12 @@ class MainActivity : AppCompatActivity() , GetFlickrJsonData.OnDataAvailable {
 
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.addOnItemTouchListener(RecyclerItemClickListener(this,binding.recyclerView,this))
         binding.recyclerView.adapter = flickrRecyclerViewAdapter
 
         val getRawData = GetRawData()
 
-        var url : String = createUri("https://api.flickr.com/services/feeds/photos_public.gne","android,oreo","en-us",true)
+        var url : String = createUri("https://api.flickr.com/services/feeds/photos_public.gne","actors","en-us",false)
         getRawData.downloadCompleteListener(this)
 
         getRawData.execute(url)
@@ -52,6 +54,10 @@ class MainActivity : AppCompatActivity() , GetFlickrJsonData.OnDataAvailable {
        if(item.itemId == R.id.search_item){
            Toast.makeText(this, "Search clicked", Toast.LENGTH_SHORT).show()
        }
+        if(item.itemId == R.id.app_exit) {
+            Toast.makeText(this, "Exiting now", Toast.LENGTH_SHORT).show()
+            finish()
+        }
         return super.onOptionsItemSelected(item)
     }
 
@@ -87,6 +93,16 @@ class MainActivity : AppCompatActivity() , GetFlickrJsonData.OnDataAvailable {
 
     override fun onError(exception: Exception) {
         Log.e(TAG,"Error is ${exception.message}")
+    }
+
+    override fun onItemClicked(view: View, position: Int) {
+        Log.d(TAG , "onItemClicked starts")
+        Toast.makeText(this, "normal tap position $position", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onItemLongCLicked(view: View, position: Int) {
+        Log.d(TAG , "onItemLongCLicked starts")
+        Toast.makeText(this, "long tap position $position", Toast.LENGTH_SHORT).show()
     }
 }
 
